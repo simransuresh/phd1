@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "surface temperature":273.15,
+  "potential mantle temperature":1573.15,
+  "thermal expansion coefficient":0,
+  "thermal diffusivity":1.06060606e-6,
+  "features":
+  [
+  {
+      "model": "continental plate",
+      "name": "australian_plate",
+      "coordinates": [
+        [200000,0],[400000,0],[400000,200000],[200000,200000]
+      ],
+      "composition models": [
+        { "model": "uniform", "compositions": [1], "fractions": [1.0] }
+      ],
+      "temperature models": [
+        { "model": "adiabatic" }
+      ]
+    },
+
+    {
+      "model": "continental plate",
+      "name": "pacific_plate",
+      "coordinates": [
+        [0,0],[200000,0],[200000,200000],[0,200000]
+      ],
+      "composition models": [
+        { "model": "uniform", "compositions": [2], "fractions": [1.0] }
+      ],
+      "temperature models": [
+        { "model": "adiabatic"}
+      ]
+    }
+
+
+  ]
+}
