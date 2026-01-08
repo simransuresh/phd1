@@ -3,7 +3,7 @@ set Start time                             = 0
 set End time                               = 1e7
 set Maximum time step  			   = 1e4
 set Use years instead of seconds           = true
-set Output directory                       = 3d_shear
+set Output directory                       = 3d_shear_v3
 set Adiabatic surface temperature          = 1600
 
 
@@ -31,7 +31,8 @@ subsection Boundary temperature model
 end
 
 subsection Boundary traction model
-  set Prescribed traction boundary indicators = right x: initial lithostatic pressure
+  #set Prescribed traction boundary indicators = right x: initial lithostatic pressure
+  set Prescribed traction boundary indicators = back x: initial lithostatic pressure, right y: initial lithostatic pressure
 
   subsection Initial lithostatic pressure
     set Representative point = 1000, 5000, 5000
@@ -39,14 +40,17 @@ subsection Boundary traction model
 end
 
 subsection Boundary velocity model
-  set Tangential velocity boundary indicators = front, back, top, bottom
+  #set Tangential velocity boundary indicators = front, back, top, bottom
   #set Zero velocity boundary indicators = right
-  set Prescribed velocity boundary indicators = left: function
+  #set Prescribed velocity boundary indicators = left: function
+
+  set Tangential velocity boundary indicators = top, bottom
+  set Prescribed velocity boundary indicators = front x: function, left y: function
 
   subsection Function
     set Variable names      = x,y,z
     set Function constants  = v=5, cm=0.01
-    set Function expression = if(x>0, v*cm*(1-z/100000), 0); 0; 0
+    set Function expression = if(x>0, v*cm*(1-z/100000), 0); if(y>0, v*cm*(1-z/100000), 0); 0
   end
 end
 
