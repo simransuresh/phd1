@@ -15,6 +15,7 @@ set World builder file = init.wb
 set End time                               = 1e7
 set Output directory                       = alpine_fault 
 set Dimension                              = 3
+#set Time step				   = 1e5
 
 # We set the average pressure at the surface to 0.
 set Pressure normalization                 = surface
@@ -26,7 +27,7 @@ set Surface pressure                       = 0
 set Adiabatic surface temperature          = 1573.15
 set Nonlinear solver scheme                = iterated Advection and Stokes
 set Nonlinear solver tolerance             = 1e-5
-set Max nonlinear iterations               = 50
+set Max nonlinear iterations               = 5
 
 # We use the geometric multigrid solver, but because this is a difficult
 # linear problem to solve with a large viscosity contrast, we increase the
@@ -53,9 +54,9 @@ subsection Geometry model
   set Model name = box
 
   subsection Box
-    set X extent  = 250000
-    set Y extent  = 100000
-    set Z extent  = 100000
+    set X extent  = 400000
+    set Y extent  = 200000
+    set Z extent  = 200000
     set X repetitions = 5
     set Y repetitions = 2
     set Z repetitions = 2
@@ -71,31 +72,31 @@ end
 # parallel to the spreading direction, and the boundaries perpendicular to
 # spreading are open to convective flux (we prescribe the lithostatic
 # pressure).
+
+subsection Boundary traction model
+  set Prescribed traction boundary indicators = right x: initial lithostatic pressure
+  #set Prescribed traction boundary indicators = back x: initial lithostatic pressure, right y: initial lithostatic pressure
+
+  subsection Initial lithostatic pressure
+    set Representative point = 1000, 5000, 5000
+  end
+end
+
 subsection Boundary velocity model
-  set Tangential velocity boundary indicators = front, back
-  set Prescribed velocity boundary indicators = top: function
+  set Tangential velocity boundary indicators = front, back, top, bottom
+  #set Zero velocity boundary indicators = right
+  set Prescribed velocity boundary indicators = left: function
+
+  #set Tangential velocity boundary indicators = top, bottom
+  #set Prescribed velocity boundary indicators = front x: function, left y: function
 
   subsection Function
-    set Function constants  = spreading_rate=0.03
     set Variable names      = x,y,z
-    set Function expression = if(x<50000 || (x<200000 && y<50000), -spreading_rate, spreading_rate); 0; 0
+    set Function constants  = v=2, cm=0.01
+    set Function expression = if(x>0, v*cm*(1-z/200000), 0); 0; 0
   end
 end
 
-# We prescribe a boundary traction in vertical direction at the bottom and
-# and right boundaries, setting it to the lithostatic pressure to allow
-# for free in- and outflow of material.
-subsection Boundary traction model
-  set Prescribed traction boundary indicators = right:initial lithostatic pressure, left:initial lithostatic pressure, bottom:initial lithostatic pressure
-
-  # We choose the representative point at 125 km from the ridge, which
-  # is in the middle between the distance of the old (200 km) and young
-  # (50 km) ridge segment at each side.
-  subsection Initial lithostatic pressure
-    set Number of integration points = 1000
-    set Representative point         = 175000,0,0
-  end
-end
 
 # The initial temperature comes form the Geodynamic World Builder.
 subsection Initial temperature model

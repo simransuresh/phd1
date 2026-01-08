@@ -8,7 +8,7 @@
   [
   {
       "model": "continental plate",
-      "name": "australian_plate",
+      "name": "pacific_plate",
       "coordinates": [
         [200000,0],[400000,0],[400000,200000],[200000,200000]
       ],
@@ -22,7 +22,7 @@
 
     {
       "model": "continental plate",
-      "name": "pacific_plate",
+      "name": "australian_plate",
       "coordinates": [
         [0,0],[200000,0],[200000,200000],[0,200000]
       ],
